@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>欢迎注册</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>用户注册</h1>
+    用户名：<input type="text" id="username"><br />
+    密码：<input type="password" id="password"><br />
+    手机号：<input type="text" id="phone"><br />
+    <input type="button" value="注册" id="btn_register">
+    <script>
+        $(function(){
+            $('#username').change(function(){
+                $.post('http://localhost:8082/check',{username:$('#username').val()},function(res){
+                    if(res.status){
+                        alert('该用户已存在')
+                    } 
+                })
+            })
+            $('#btn_register').click(function(){
+                $.post('http://localhost:8082/register', {username: $('#username').val(), pwd: $('#password').val(),phone:$('#phone').val()}, function(res){
+                    // console.log(res);
+                    if(res.status){
+                        // alert('该用户已存在')
+                    }else {
+                        window.alert("注册成功");
+                        window.location.href='login.html';
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>

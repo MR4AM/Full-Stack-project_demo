@@ -1,0 +1,5 @@
+*{margin:0;padding:0;text-decoration: none;}
+#top{width: 100%;height: 48px;border:1px solid;text-align:center;background-color:orange;}
+#main .nav{position:absolute;left:0;top:48px;width: 200px;border:1px solid;height: 800px;background-color: #ddd;}
+#detail{position:absolute;left:200px;top:48px;}
+.nav li{height: 40px;line-height: 40px;border-bottom: 1px solid;text-align: center;}
