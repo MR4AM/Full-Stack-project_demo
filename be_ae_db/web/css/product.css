@@ -1,11 +1,10 @@
  body{height: 100%;}
         #list{width: 100%;padding-top: 30px;}
-        table{width:1000px;border:1px solid #ddd;border-collapse:collapse;margin:0 auto;}
+        table{width:100%;border:1px solid #ddd;border-collapse:collapse;margin:0 auto;}
         tr:nth-child(even){background-color:orange;}
-        td{border:1px solid #000;padding:3px 5px;width: 50px;height: 25px;}
-        td:nth-child(3){width: 500px;}
-       #flashbox{position:absolute;background-color: #fff;z-index: 2;width: 400px;height: 500px;display: none;}
-        .coverbox{height: 2000px;width: 100%;z-index: 1;background-color: #ccc;opacity: 0.6;position:absolute;top:0;left:0;}
+        td{border:1px solid #000;padding:3px 5px;width: 200px;height: 25px;}
+        #flashbox{position:absolute;background-color: #fff;z-index: 2;width: 400px;height: 500px;display: none;}
+        .coverbox{position:absolute;height:1000px;width: 2000px;z-index: 1;background-color: #ccc;opacity: 0.6;position:absolute;top:0;left:0;}
         #flashbox #close{
             position:absolute;right:0;top:0;width: 30px;height: 20px;outline: none;
         }

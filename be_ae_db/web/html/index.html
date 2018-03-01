@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <title>后台管理系统</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="../css/index.css" />
     <link rel="stylesheet" type="text/css" href="../css/product.css" />
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.js" type="text/javascript"></script>
+    <script src="../js/common.js" type="text/javascript"></script>
 </head>
 <body>
     <div id="top">
@@ -17,14 +20,22 @@
             <li><a href="javascript:" data-url="">订单管理</a></li>
             <li><a href="javascript:" data-url="">用户管理</a></li>
         </ul>
-        <div id="detail"></div>
+        <div id="detail">
+            <div class="det_top">
+                <button class="copybtn">添加管理信息</button>
+            </div>
+            <div class="det_main">
+                
+            </div>
+        </div>
     </div>
+    <div id="coverbox"></div>
     <script type="text/javascript">
         jQuery(function($){
             $('.nav').click(function(e){
                 var currTag=$(e.target);
                 if(currTag.is('a')){
-                    $('#detail').load(currTag.data('url'));
+                    $('.det_main').load(currTag.data('url'));
                 }
             })
         })

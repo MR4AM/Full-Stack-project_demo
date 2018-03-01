@@ -25,10 +25,24 @@ module.exports={
             };
             db.mongodb.insert('product',product_arr);
         })
+         // 修改产品信息
+         app.post('/modifileproduct',(req,res)=>{
+            let id = req.body.id;
+            let name = req.body.name;
+            let price = req.body.price;
+            let color = req.body.color;
+             let new_arr={
+                "id":id,
+                "name":name,
+                "price":price,
+                "color":color
+            };
+         })
          // 删除产品信息
           app.post('/delproduct',(req,res)=>{
             let id = req.body.id;
-            db.mongodb.delete('product',{"id":id});
+            let oid=db.mongodb.objectid(id);
+            db.mongodb.delete('product',{"_id":oid});
         })
     }
 }

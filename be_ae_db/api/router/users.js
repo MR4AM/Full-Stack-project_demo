@@ -20,7 +20,8 @@ module.exports={
         app.post('/login', (req, res) => {
             let name = req.body.username;
             let pwd = req.body.pwd;
-            userCheck('test',{"name":name,"password":pwd},res);
+            // "password":pwd
+            userCheck('test',{"name":name},res);
         })
         // 注册前先查询数据库是否存在用户名
         app.post('/check',(req,res)=>{

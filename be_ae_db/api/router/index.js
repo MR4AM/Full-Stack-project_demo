@@ -15,8 +15,16 @@ app.all('*', function(req, res, next) {
       next();
     }
 });
-
 app.use(bp.urlencoded({extended: false}));
+// 过滤器
+// app.use((req, res, next) => {
+//     if(req.body.name){
+//         next();
+//     } else {
+//         console.log(req.body.name)
+//         res.send({status: false, error: 'unauthorized', message: "无权限访问"})
+//     }
+// })
 module.exports={
     start:(_port)=>{
         app.listen(_port || 8080);
