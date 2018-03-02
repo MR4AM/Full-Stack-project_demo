@@ -22,7 +22,7 @@ $(function(){
                         <td>${item.price}</td>
                         <td>${item.color}</td>
                         <td>
-                            <button class="rewbtn" data-id="${item['_id']}">修改</button>
+                            <button class="updatebtn" data-id="${item['_id']}">修改</button>
                             <button class="delbtn" data-id="${item['_id']}">删除</button>
                         </td>
                 </tr>`
@@ -38,24 +38,54 @@ $(function(){
              <span>商品名称</span><input  value=""></br>
              <span>商品价格</span><input  value=""></br>
              <span>商品颜色</span><input  value=""></br>
-             <button id="close">&times;</button><button id="ctrls">保存</button>`;
-            // flashbox.innerHTML=html;
+             <button id="close">&times;</button><button id="ctrls">保存</button></br>
+             `
             $flashbox.html(html);
         }
-        // 商品信息保存函数
-        function baochun(){
+        function createNew(arr){
+            let data_id=arr;
+             common.http.get('singlepro',{data_id:data_id},function(data){
+                var html;
+                 html=  `
+                 <h3>商品编辑</h3>
+                 <span>商品ID</span><input value="${data[0].id}" data-id="${data[0]['_id']}" class="idinput"></br>
+                 <span>商品名称</span><input  value="${data[0].name}"></br>
+                 <span>商品价格</span><input  value="${data[0].price}"></br>
+                 <span>商品颜色</span><input  value="${data[0].color}"></br>
+                 <button id="close">&times;</button><button id="save">保存</button></br>
+                 `
+                $flashbox.html(html);     
+            })
+        }
+        function abc(){
             var goodlist={};
             var input=document.querySelectorAll('input');
             input.forEach(function(item,idx){
             goodlist[idx]=item.value;
             })
-            common.http.post('saveproduct',{id: goodlist[0], name:goodlist[1],price:goodlist[2],color:goodlist[3]},function(){
+            let pro_id=$('.idinput').data('id');
+            common.http.post('updateproduct',{pro_id:pro_id,id: goodlist[0], name:goodlist[1],price:goodlist[2],color:goodlist[3]},function(res){
+            })
+             common.http.get('getproducts',null,function(data){
+                createTable(data);
 
+            })
+        }
+        // 添加商品信息函数
+        function writepro(api){
+            var goodlist={};
+            var input=document.querySelectorAll('input');
+            input.forEach(function(item,idx){
+            goodlist[idx]=item.value;
+            })
+            common.http.post(api,{id: goodlist[0], name:goodlist[1],price:goodlist[2],color:goodlist[3]},function(res){
             })
             common.http.get('getproducts',null,function(data){
                 createTable(data);
+
             })
         }
+       
         // 页面加载后先执行一次两个生成结构的函数
          createTable(res);
         // 事件委托：利用冒泡把事件委托给父级去处理
@@ -93,10 +123,24 @@ $(function(){
             }
              // 保存按钮
             if(e.target.id=='ctrls'){
-               baochun();
+               writepro('saveproduct');
                $flashbox.hide();
                $coverbox.removeClass('coverbox');
             }
+            // 修改按钮
+            if(e.target.className=='updatebtn'){
+                createNew($(e.target).closest('tr').find('.updatebtn').data('id'));
+                flashWindow($flashbox);
+                $flashbox.show();
+                $coverbox.addClass('coverbox');
+            }
+            // 修改后保存按钮
+            if(e.target.id=='save'){
+                abc();
+               $flashbox.hide();
+               $coverbox.removeClass('coverbox');
+            }
+
         })
     })
 })

@@ -29,15 +29,16 @@ module.exports={
         }
     },
     // 改
-    update:(_collection,wd,ud)=>{
-         var whereData = wd;
-         var updateDat = {$set:ud}; //如果不用$set，替换整条数据
-         db.db("user").collection(_collection).update(whereData, updateDat, function(error, result){
+    update:(_collection,pro_id,new_arr)=>{
+         var whereData = pro_id;
+         var updateData = new_arr; 
+         db.db("user").collection(_collection).update(whereData, updateData, function(error, result){
             if (error) {
               console.log('Error:'+ error);
             }else{
-              console.log(result);
+              console.log("修改成功");
             }
+        })
     },
     // 增
     insert:(_collection,_data)=>{
