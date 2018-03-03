@@ -11,7 +11,6 @@ module.exports={
         app.get('/singlepro',(req,res)=>{
             let data_id=req.query.data_id;
             let oid=db.mongodb.objectid(data_id);
-            console.log(data_id);
             productCheck('product',{"_id":oid},res);
         })
         app.get('/getproducts',(req,res)=>{

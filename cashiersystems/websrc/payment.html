@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        *{list-style: none;}
+        #paybox{margin:100px auto;width: 400px;border:1px dashed orange;text-align: center;background-color:#ccc;}
+    </style>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/socket.io/2.0.4/socket.io.js"></script>
+    <title>支付页面</title>
+</head>
+<body>
+    <div id="paybox">
+        <div id="prolist"></div>
+        <input type="button" value="结账" id="btn_payment">
+    </div>
+    <script>
+        /*
+            1、获取参数 orderno
+            2、通过获取订单的 api 获取当前订单信息
+            3、判断当前订单是否未付款
+            4、如果未付款 $('#btn_payment').show();
+            5、付款事件 => $.post('updateorder') 更改订单信息为已付款
+            6、同时通过 socket 向收银端推送付款成功的信息
+            7、收银端接收到客户端的收银成功信息，打印小票
+            8、完成收银
+        */
+       jQuery(function($){
+            var par=location.search;
+            par=decodeURI(par);
+            var url=par.substring(1);
+            url=url.split('=');
+            par=url[1];
+            var socket;
+             $.get('order',{orderno:par},(res)=>{
+                function proList(res){
+                    var paystatus;
+                    var pro_arr=res[0].products;
+                    if(res[0].status==0){
+                        paystatus='未支付';
+                    }else if(res[0].status==1){
+                        paystatus='已支付';
+                    }
+                    $('<h3/>').text('购物清单信息').appendTo($('#prolist'));
+                    $('<p/>').text('订单号：'+res[0].orderno).appendTo($('#prolist'));
+                    $('<p/>').text('支付状态：'+paystatus).appendTo($('#prolist'));
+                    var pro=pro_arr.map(function(item,idx){
+                        return `<li>商品名称：${item.name}--------------------价格：${item.price}</li>`
+                    }).join('');
+                    $(pro).appendTo($('#prolist'));
+                    $('<p/>').text('总价：'+res[0].total).appendTo($('#prolist'));         
+                }
+                proList(res);
+                $('#btn_payment').click(function(){
+                    let orderno=par;
+                    let status=1;
+                    $.post('updateorder',{orderno:orderno,status:status},function(res){                    
+                    })
+                    socket=io.connect('ws://localhost:8080');
+                     socket.emit('paymes',JSON.stringify({orderno:res[0].orderno,products:res[0].products,total:res[0].total,status:"已支付"}));
+                     $('#paybox').html('支付已完成');
+                })
+            })
+           
+       })    
+    </script>
+</body>
+</html>

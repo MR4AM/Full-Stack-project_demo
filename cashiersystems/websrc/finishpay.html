@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>支付完成</title>
+    <style type="text/css">
+         #finishbox{margin:100px auto;width: 300px;border:1px dashed orange;text-align: center;background-color:#ccc;}
+         #prolist h3{border-top: 1px solid orange;}
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/socket.io/2.0.4/socket.io.js"></script>
+</head>
+<body>
+ <div id="finishbox">
+        <div id="prolist"></div>
+ </div>
+    <script type="text/javascript">
+        var socket;
+        jQuery(function($){
+            socket=io.connect('ws://localhost:8080');
+            socket.on('paymes',function(msg){
+                    msg=JSON.parse(msg);
+                    console.log(msg);
+                    proList(msg);
+            })
+            function proList(res){
+                var pro_arr=res.products;
+                $('<h3/>').text('购物清单信息').appendTo($('#prolist'));
+                $('<p/>').text('订单号：'+res.orderno).appendTo($('#prolist'));
+                $('<p/>').text('支付状态：'+res.status).appendTo($('#prolist'));
+                var pro=pro_arr.map(function(item,idx){
+                    return `<li>商品名称：${item.name}------价格：${item.price}</li>`
+                }).join('');
+                $(pro).appendTo($('#prolist'));
+                $('<p/>').text('总价：'+res.total).appendTo($('#prolist'));         
+            }
+        })
+
+    </script>
+</body>
+</html>

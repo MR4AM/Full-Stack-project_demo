@@ -57,7 +57,7 @@ $(function(){
                 $flashbox.html(html);     
             })
         }
-        function abc(){
+        function updateproduct(){
             var goodlist={};
             var input=document.querySelectorAll('input');
             input.forEach(function(item,idx){
@@ -136,7 +136,7 @@ $(function(){
             }
             // 修改后保存按钮
             if(e.target.id=='save'){
-                abc();
+                updateproduct();
                $flashbox.hide();
                $coverbox.removeClass('coverbox');
             }

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style type="text/css">
+        *{list-style: none;text-decoration: none;}
+        #indexbox{width: 800px;margin:0 auto;text-align: center;}
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <title>商品结算系统</title>
+</head>
+<body>
+    <div id="indexbox">
+        <h1>商品结算系统</h1>
+        商品条形码：<input type="text" id="barcode">
+        <input type="button" value="生成二维码快捷付款" id="btn_cashier">
+        <input type="button" value="去支付页面付款" id="btn_webcashier">
+        <div id="prolist">
+            <ul></ul>
+        </div>
+        <div id="qrcode" style="width: 200px; height: 200px;"></div> 
+    </div>
+    <script>
+        $(function(){
+            var proList = [];
+            $('#barcode').keyup(function(key){
+                if(key.keyCode == 13){
+                    $.post('cashier', {barcode: $('#barcode').val()}, function(res){
+                        console.log(res);
+                        if(!res.status && res.error == "unauthorized"){
+                            window.location.href = 'login.html';
+                        } else {
+                            proList.push(res.data[0]);
+                            $('<li></li>').text(`商品名称：${res.data[0].name}--------------------价格：${res.data[0].price}`).appendTo($('#prolist>ul'));
+                        }
+                        $('#barcode').select();
+                    })
+                }
+            }).focus();
+            // 测试条形码：6945395503184
+            $('#btn_cashier').click(function(){
+                $.post('generateorder', {pros: JSON.stringify(proList)}, function(res){
+                    var orderno = res.ops[0].orderno;
+                    var url = 'http:// 10.3.131.1/payment.html?orderno=' + orderno;
+                    console.log(url);
+                    $('#qrcode').qrcode(url);
+                })
+            })
+            $('#btn_webcashier').click(function(){
+                $.post('generateorder', {pros: JSON.stringify(proList)}, function(res){
+                    var orderno = res.ops[0].orderno;
+                    window.location.href = 'payment.html?订单号='+ orderno;
+                })
+            })
+        })
+    </script>
+</body>
+</html>
