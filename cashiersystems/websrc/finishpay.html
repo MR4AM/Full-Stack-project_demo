@@ -12,6 +12,7 @@
 </head>
 <body>
  <div id="finishbox">
+        <input type="button" value="打印小票" id="printer"/>
         <div id="prolist"></div>
  </div>
     <script type="text/javascript">
@@ -20,7 +21,6 @@
             socket=io.connect('ws://localhost:8080');
             socket.on('paymes',function(msg){
                     msg=JSON.parse(msg);
-                    console.log(msg);
                     proList(msg);
             })
             function proList(res){

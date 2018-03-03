@@ -4,7 +4,7 @@ const filter = require('../utils/filter')
 
 module.exports = {
     register(app){
-        app.post('/cashier', (req, res) => {
+        app.post('/cashier',filter, (req, res) => {
             let barcode = req.body.barcode;
             db.mongodb.select('products', {barcode}).then((result) => {
                 if(result && result.length > 0){

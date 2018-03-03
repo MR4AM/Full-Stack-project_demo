@@ -4,21 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style type="text/css">
+        #loginbox{width: 500px;margin: 0 auto;background-color:orange;text-align: center;}
+        input{padding:5px;margin:5px;}
+
+    </style>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <title>Login</title>
 </head>
 <body>
-    <input type="text" id="username">
-    <input type="password" id="password">
-    <input type="button" value="Login" id="btn_login">
-
+    <div id="loginbox">
+        <h1>欢迎登录商品结算系统</h1>      
+        管理员名字：<input type="text" id="username"><br />
+        管理员密码：<input type="password" id="password"><br />
+        <input type="button" value="登录" id="btn_login">
+    </div>
     <script>
         $(function(){
             $('#btn_login').click(function(){
                 $.post('login', {username: $('#username').val(), password: $('#password').val()}, function(res){
-                    console.log(res);
+                    $('#password').val('').focus();
+                    $('#username').val('').focus();
                     if(res.status){
                         window.location.href = "index.html";
+                    }else{
+                        alert('该管理员不存在或您输入的密码有误');
                     }
                 })
             })

@@ -7,6 +7,7 @@
     <style type="text/css">
         *{list-style: none;text-decoration: none;}
         #indexbox{width: 800px;margin:0 auto;text-align: center;}
+        #prolist{background-color: orange;}
     </style>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
@@ -16,8 +17,8 @@
     <div id="indexbox">
         <h1>商品结算系统</h1>
         商品条形码：<input type="text" id="barcode">
-        <input type="button" value="生成二维码快捷付款" id="btn_cashier">
-        <input type="button" value="去支付页面付款" id="btn_webcashier">
+        <input type="button" value="生成二维码快捷收款" id="btn_cashier">
+        <input type="button" value="去支付页面收款" id="btn_webcashier">
         <div id="prolist">
             <ul></ul>
         </div>
@@ -53,8 +54,10 @@
                 $.post('generateorder', {pros: JSON.stringify(proList)}, function(res){
                     var orderno = res.ops[0].orderno;
                     window.location.href = 'payment.html?订单号='+ orderno;
+                   
                 })
             })
+            
         })
     </script>
 </body>
